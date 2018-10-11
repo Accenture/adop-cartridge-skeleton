@@ -1,7 +1,9 @@
 
 import pluggable.scm.*;
+import adop.cartridge.properties.*;
 
 SCMProvider scmProvider = SCMProviderHandler.getScmProvider("${SCM_PROVIDER_ID}", binding.variables)
+CartridgeProperties cartridgeProperties = new CartridgeProperties("${CARTRIDGE_CUSTOM_PROPERTIES}");
 
 // Folders
 def workspaceFolderName = "${WORKSPACE_NAME}"
@@ -9,9 +11,9 @@ def projectFolderName = "${PROJECT_NAME}"
 def projectScmNamespace = "${SCM_NAMESPACE}"
 
 // Variables
-// **The git repo variables will be changed to the users' git repositories manually in the Jenkins jobs**
-def skeletonAppgitRepo = "YOUR_APPLICATION_REPO"
-def regressionTestGitRepo = "YOUR_REGRESSION_TEST_REPO"
+// **The git repo variables can be changed to the users' git repositories when loading the cartridge and populating the CARTRIDGE_CUSTOM_PROPERTIES with "scm.code.repo.name" and "scm.test.repo.name" properties.
+def skeletonAppgitRepo = cartridgeProperties.getProperty("scm.code.repo.name", "YOUR_APPLICATION_REPO");
+def regressionTestGitRepo = cartridgeProperties.getProperty("scm.test.repo.name", "YOUR_REGRESSION_TEST_REPO");
 
 // ** The logrotator variables should be changed to meet your build archive requirements
 def logRotatorDaysToKeep = 7
